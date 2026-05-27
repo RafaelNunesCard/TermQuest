@@ -1,0 +1,188 @@
+import { Personagem } from '../models/Personagem';
+import { Monstro } from '../models/Monstros';
+import { Guilda } from '../data/Ficha';
+import { escolherMonstro, dropMoeda } from './funMonstros';
+import { calcularDano, calcularXP, evoluirPersonagem, calcularDanoHabilidade, seDefender, maiorNivel } from './calculo';
+import { consumirItem, escolhaPersonagem, escolherAcao, escolherAlvo, escolherHabilidade } from './usuario';
+import { status, colorirTexto, barraProgresso, esperar } from './interface';
+import { limparEfeitos, processarEfeitos } from './processarEfeitos';
+import { cores } from '../models/cores';
+
+async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[], nivelDificuldade: number, andar: number) {
+    let nivelBase = maiorNivel(grupo).nivel;
+    let dificuldade = Math.floor(nivelBase * 1.5) + (nivelDificuldade * 5) + andar;
+
+    console.log(`A ${guilda} entrou em uma batalha contra monstros de dificuldade ${dificuldade}.`)
+    await esperar(1000);
+    
+    let monstro1 = escolherMonstro(dificuldade, monstros);
+    let monstro2 = escolherMonstro(dificuldade, monstros);
+    let monstro3 = escolherMonstro(dificuldade, monstros);
+
+    let grupoMonstros = [monstro1, monstro2, monstro3].filter(m => m !== null) as Monstro[];
+
+    if (grupoMonstros.length === 0) {
+        console.log("Nenhum monstro encontrado para essa dificuldade.");
+        return;
+    }
+
+    const tetoPorNivel: Record<number, number> = {
+        1:  1.5,  // Slime no máximo 1.5x
+        5:  2.0,  // Goblin no máximo 2x
+        20: 2.5,  // Orc no máximo 2.5x
+        40: 3.0,  // Troll no máximo 3x
+    }
+
+    for (let monstro of grupoMonstros) {
+        let teto = tetoPorNivel[monstro.nivel] ?? 2.0;
+        let escala = Math.min(1 + (andar * 0.05), teto);
+        
+        monstro.hp = Math.floor(monstro.hp * escala);
+        monstro.hpMax = monstro.hp;
+        monstro.ataque = Math.floor(monstro.ataque * escala);
+        monstro.defesa = Math.floor(monstro.defesa * escala);
+
+        await esperar(600);
+        limparEfeitos(monstro);
+        console.log(`Um ${monstro.nome} foi encontrado na dungeon.`);
+    }
+
+    let turno = 1;
+
+    while (grupo.length > 0 && grupoMonstros.length > 0) {
+        await esperar(1000);
+        colorirTexto(cores.laranja ,`\n---- Turno ${turno} ----\n`);
+        grupoMonstros = grupoMonstros.filter(m => m.hp > 0);// Remove os monstros derrotados
+        await status(grupo, grupoMonstros);
+        
+        // Grupo ataca o monstro
+        for (let personagem of grupo) {
+            if(grupoMonstros.length === 0) break;
+
+            let monstroAlvo = escolherAlvo(personagem, grupoMonstros);
+            let resposta = escolherAcao(personagem);
+            await fazerAcao(resposta, personagem, monstroAlvo);
+
+            if (monstroAlvo.hp <= 0) {
+                console.log(`${personagem.nome} derrotou o ${monstroAlvo.nome}!`);
+                let ouroGanho = dropMoeda(dificuldade, monstroAlvo);
+                personagem.ouro += ouroGanho;
+                colorirTexto(cores.laranja, `${personagem.nome} ganhou ${ouroGanho} ouro!`);
+                let xpGanho = (calcularXP(monstroAlvo.xp, nivelDificuldade) - monstroAlvo.hp) / grupo.length; // Divide o XP ganho entre os membros do grupo
+                for (let p of grupo) {
+                    console.log(`${p.nome} ganhou ${xpGanho} de XP.`);
+                    evoluirPersonagem(p, xpGanho); 
+                    colorirTexto(cores.verde ,`${p.nome} barra de XP: ${barraProgresso(p.xp, p.xpNecessario, 10)}\n`);
+                }
+                grupoMonstros = grupoMonstros.filter(m => m.hp > 0);// Remove os monstros derrotados
+                continue;
+            }
+            await esperar(1000);
+        }
+
+        for (let personagem of grupo) await processarEfeitos(personagem);
+        grupoMonstros = grupoMonstros.filter(m => m.hp > 0);
+        grupo = grupo.filter(p => p.hp > 0); // Remove personagens
+        
+        // Monstro ataca de volta
+        console.log("-----------------------------");
+        colorirTexto(cores.amarelo ,"\nOs monstros contra-atacam!\n");
+        for (let monstro of grupoMonstros) {
+            let personagemAlvo = grupo[Math.floor(Math.random() * grupo.length)];
+            let dano = calcularDano(monstro, personagemAlvo);
+            
+            if (dano === 0) {
+                console.log(`${monstro.nome} errou o ataque!`);
+            } else {
+                personagemAlvo.hp -= dano;
+                console.log(`${monstro.nome} causou ${dano} de dano no ${personagemAlvo.nome}.`);
+            }
+
+            if (personagemAlvo.hp <= 0) {
+                console.log(`${monstro.nome} derrotou o ${personagemAlvo.nome}!`);
+            }
+            await esperar(500);
+            grupo = grupo.filter(p => p.hp > 0); // Remove personagens
+        }
+
+        for (let monstro of grupoMonstros) await processarEfeitos(monstro);
+
+        turno++;
+    }
+    console.log("");
+    console.log(grupo.length > 0 ? `A ${guilda} venceu a batalha!` : `A guilda ${guilda} foi derrotada...`);
+}
+
+async function fazerAcao(resposta: string, personagem: Personagem, monstro: Monstro): Promise<void> {
+    let dano;
+    switch (resposta) {
+        case 'atacar':
+            console.log('Você escolheu atacar!\n');
+            dano = calcularDano(personagem, monstro);
+            if (dano === 0) {
+                console.log(`${personagem.nome} errou o ataque!`);
+            } else {
+                monstro.hp -= dano;
+                console.log(`${personagem.nome} causou ${dano} de dano no ${monstro.nome}.`);
+            }
+            console.log("");
+            await esperar(1000);
+            break;
+
+        case 'habilidade':
+            console.log('Você escolheu usar uma habilidade!\n');
+            dano = calcularDanoHabilidade(personagem, monstro, escolherHabilidade(personagem));
+            if(dano < 0) {
+                console.log(`${personagem.nome} escolheu curar`);
+                let aliado = Guilda.membros[escolhaPersonagem(Guilda.membros, 'Escolha um personagem para curar')]; 
+                aliado.hp = Math.min(aliado.hpMax, aliado.hp - dano); // Dano negativo cura
+                colorirTexto(cores.verdeLimao, `${aliado.nome} foi curado! (HP - ${aliado.hp}/${aliado.hpMax})`)
+                return;
+            }
+            monstro.hp -= dano;
+            console.log(`${personagem.nome} causou ${dano} de dano no ${monstro.nome}.`);
+            console.log("");
+            await esperar(500);
+            break;
+
+        case 'defender':
+            console.log('Você escolheu defender!\n');
+            seDefender(personagem);
+            console.log("");
+            break;
+        case 'item':
+            let item = consumirItem(personagem)
+            switch(item?.tipo){
+                case 'Poção':
+                    personagem.energia += item.valor;
+                    console.log(`${item.nome} foi usado`);
+                    break;
+
+                case 'Equipamento':
+                    personagem.ataque += item.valor;
+                    console.log(`${item.nome} foi usado`);
+                    break;
+
+                case 'Chave':
+                    console.log("Não pode ser usada em batalha");
+                    break;
+
+                default:
+                    console.log("Você não adicionou o tipo no case 'item'");
+            }
+
+            break;
+
+        case 'fugir':
+            console.log('Você escolheu fugir!\n');
+            console.log('Fugir não é implementado ainda, mas em breve será possível escapar de batalhas difíceis!');
+            console.log("");
+            await esperar(1000);
+            break;
+
+        default:
+            console.log('Não sei como vc chegou aqui, mas algo deu errado na escolha da ação.');
+    } 
+}
+
+export { batalha };
