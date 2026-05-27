@@ -63,7 +63,7 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
 function seDefender(personagem: Personagem): void {
     console.log(`${personagem.nome} se defende, aumentando temporariamente sua defesa!`);
     personagem.defesa += 5; // Aumenta a defesa temporariamente, você pode ajustar esse valor
-    personagem.efeitosAplicados.push(efeitos[5])
+    personagem.efeitosAplicados.push(efeitos.defendendo)
 }
 
 

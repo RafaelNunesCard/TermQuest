@@ -144,7 +144,7 @@ const pirata: Personagem = {
     nome: 'Izidio',
     classe: 'Pirata',
     passiva: '2gold',
-    explicarPassiva: 'Duplica o dinheiro ganho pelo time',
+    explicarPassiva: 'Duplica o dinheiro ganho pelo time, mas não tem energia usa dinheiro para habilidades',
     hp: 100,
     hpMax: 100,
     ataque: 35,
