@@ -5,7 +5,7 @@ const personagemBase = {
     nivel: 1,
     ouro: 0,
     xp: 0,
-    xpNecessario: 100,
+    xpNecessario: 50,
     inventario: [],
     efeitosAplicados: [],
     perderTurno: false

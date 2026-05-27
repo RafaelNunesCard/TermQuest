@@ -13,7 +13,7 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
 
     if(ehMonstro(atacante) && atacante.efeito && chance(atacante.efeito.chanceAplicar)){
         alvo.efeitosAplicados.push({...atacante.efeito, duracaoAtual: atacante.efeito.duracaoMax});
-        console.log(`${alvo.nome} foi envenenado!`);
+        console.log(`${alvo.nome} foi afetado por ${atacante.efeito.nome}!`);
     }
 
     let danoBase = Math.max(1, atacante.ataque - alvo.defesa);
@@ -40,18 +40,17 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
         atacante.ataque += habilidade.buff.ataque || 0;
         atacante.defesa += habilidade.buff.defesa || 0;
         
-        atacante.energia -= habilidade.custo;
-        return 0; // Habilidade de buff não causa dano
-    }
-
-    if (habilidade.dano < 0) {
-        atacante.energia -= habilidade.custo;
-        return habilidade.dano; // Cura
+        atacante.energia -= habilidade.custo; 
     }
 
     if(habilidade.Efeito && chance(habilidade.Efeito.chanceAplicar)){
         alvo.efeitosAplicados.push({...habilidade.Efeito, duracaoAtual: habilidade.Efeito.duracaoMax});
         console.log(`${alvo.nome} foi afetado por ${habilidade.Efeito.nome}!`);
+    }
+
+    if (habilidade.dano < 0) {
+        atacante.energia -= habilidade.custo;
+        return habilidade.dano; // Cura
     }
     
     atacante.energia -= habilidade.custo;
