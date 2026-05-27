@@ -34,7 +34,7 @@ src/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/termquest.git
+git clone https://github.com/RafaelNunesCard/TermQuest
 cd termquest
 
 # Instale as dependências
@@ -60,3 +60,10 @@ Projeto desenvolvido para praticar TypeScript na prática, explorando:
 - Módulos e organização de projeto
 - Programação assíncrona com async/await
 - Arquitetura orientada a responsabilidades
+
+## 🎯 Próximos passos
+- [ ] Melhorar o sistema de Boss
+- [ ] Adicionar um Vampiro
+- [ ] Adicionar mais monstros
+- [ ] Adicionar opção de salvar (SQLite)
+- [ ] Adicionar novos eventos 
