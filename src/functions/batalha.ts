@@ -10,7 +10,7 @@ import { cores } from '../models/cores';
 
 async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[], nivelDificuldade: number, andar: number) {
     let nivelBase = maiorNivel(grupo).nivel;
-    let dificuldade = Math.floor(nivelBase * 1.5) + (nivelDificuldade * 5) + andar;
+    let dificuldade = Math.floor(nivelBase * 1.5) + nivelDificuldade + andar;
 
     console.log(`A ${guilda} entrou em uma batalha contra monstros de dificuldade ${dificuldade}.`)
     await esperar(1000);
@@ -23,7 +23,7 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
 
     if (grupoMonstros.length === 0) {
         console.log("Nenhum monstro encontrado para essa dificuldade.");
-        return;
+        return true;
     }
 
     const tetoPorNivel: Record<number, number> = {
@@ -52,7 +52,7 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
     while (grupo.length > 0 && grupoMonstros.length > 0) {
         await esperar(1000);
         colorirTexto(cores.laranja ,`\n---- Turno ${turno} ----\n`);
-        grupoMonstros = grupoMonstros.filter(m => m.hp > 0);// Remove os monstros derrotados
+        grupoMonstros = grupoMonstros.filter(m => m.hp > 0); // Remove os monstros derrotados
         await status(grupo, grupoMonstros);
         
         // Grupo ataca o monstro
@@ -74,7 +74,7 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
                     evoluirPersonagem(p, xpGanho); 
                     colorirTexto(cores.verde ,`${p.nome} barra de XP: ${barraProgresso(p.xp, p.xpNecessario, 10)}\n`);
                 }
-                grupoMonstros = grupoMonstros.filter(m => m.hp > 0);// Remove os monstros derrotados
+                grupoMonstros = grupoMonstros.filter(m => m.hp > 0); // Remove os monstros derrotados
                 continue;
             }
             await esperar(1000);
@@ -88,6 +88,8 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         console.log("-----------------------------");
         colorirTexto(cores.amarelo ,"\nOs monstros contra-atacam!\n");
         for (let monstro of grupoMonstros) {
+            if(grupo.length === 0 ) break;
+
             let personagemAlvo = grupo[Math.floor(Math.random() * grupo.length)];
             let dano = calcularDano(monstro, personagemAlvo);
             
@@ -110,7 +112,12 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         turno++;
     }
     console.log("");
-    console.log(grupo.length > 0 ? `A ${guilda} venceu a batalha!` : `A guilda ${guilda} foi derrotada...`);
+    if(grupo.length === 0){
+        console.log(`A guilda ${guilda} foi derrotada...`)
+        return false;
+    }
+    console.log(`A ${guilda} venceu a batalha!`);
+    return true;
 }
 
 async function fazerAcao(resposta: string, personagem: Personagem, monstro: Monstro): Promise<void> {

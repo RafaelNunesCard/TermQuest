@@ -45,6 +45,7 @@ async function começar(){
     let dificuldade = escolherDificuldade();
     let continuar = true;
     let andar = 1;
+    let ganhou: boolean;
 
     while (continuar) {
         if(andar === 1){
@@ -52,7 +53,8 @@ async function começar(){
         }
         colorirTexto(cores.vermelho,`---- Andar ${andar} ----\n`);
 
-        await batalha(Guilda.nome, Guilda.membros, monstros, dificuldade, andar);
+        ganhou = await batalha(Guilda.nome, Guilda.membros, monstros, dificuldade, andar);
+        if(!ganhou) return await escreverDevagar(`A ${Guilda.nome} foi derrotada no andar ${andar}!`);
 
         let resposta = input('Deseja continuar na masmorra? (s/n): ');
         if (resposta === 'n') {

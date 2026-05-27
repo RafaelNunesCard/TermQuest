@@ -35,7 +35,7 @@ const slime: Monstro = {
 const reiSlime: Monstro = {
     ...monstroBase,
     nome: `${cores.verdeLimao}Rei Slime${cores.reset}`,
-    nivel: 10,
+    nivel: 8,
     xp: 100,
     dropMoeda: {
         min: 10,
@@ -103,7 +103,7 @@ const fada: Monstro = {
 const rainhaFada: Monstro = {
     ...monstroBase,
     nome: `${cores.magenta}Rainha das Fadas${cores.reset}`,
-    nivel: 2,
+    nivel: 10,
     xp: 20,
     dropMoeda: {
         min: 1,

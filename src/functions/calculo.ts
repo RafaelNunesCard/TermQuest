@@ -45,6 +45,7 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
     }
 
     if (habilidade.dano < 0) {
+        atacante.energia -= habilidade.custo;
         return habilidade.dano; // Cura
     }
 
