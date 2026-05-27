@@ -7,7 +7,7 @@ import { input, listarArray, escolhaPersonagem } from "./usuario";
 
 async function loja(membros: any[]) {
     let continuarCompra = true
-    let ouroTotal = 0;    
+    let ouroTotal: number;    
 
     let item1 = itemAleatorio(Itens);
     let item2 = itemAleatorio(Itens);
@@ -29,7 +29,7 @@ async function loja(membros: any[]) {
         membros.forEach(p => { ouroTotal += p.ouro });
         
         colorirTexto(cores.amarelo, "Produtos da Loja: ");
-        colorirTexto(cores.laranja, `Seu grupo tem ${ouroTotal}G`);
+        colorirTexto(cores.laranja, `Seu grupo tem ${Math.floor(ouroTotal)}G`);
         listarArray(loja, (p,i) => `${i+1}. ${p.nome} (${p.valor}G)`);
 
         let itemEscolhido = loja[escolhaItem()];

@@ -4,7 +4,7 @@ import { efeitos } from './Efeitos';
 import { cores } from '../models/cores';
 
 const monstroBase = {
-  chanceAcerto: 100,
+  chanceAcerto: 95,
   chanceEsquiva: 5,
   efeitosAplicados: [],
   perderTurno: false
@@ -44,7 +44,7 @@ const reiSlime: Monstro = {
     hp: 170,
     hpMax: 170,
     ataque: 30,
-    defesa: 5,
+    defesa: 8,
     energia: 30,
     energiaMax: 30,
     habilidades: [
@@ -79,7 +79,7 @@ const cobra: Monstro = {
 
 const fada: Monstro = {
     ...monstroBase,
-    nome: `${cores.roxo}Fada${cores.reset}`,
+    nome: `${cores.magenta}Fada${cores.reset}`,
     nivel: 2,
     xp: 20,
     dropMoeda: {
@@ -102,7 +102,7 @@ const fada: Monstro = {
 
 const rainhaFada: Monstro = {
     ...monstroBase,
-    nome: `${cores.roxo}Rainha das Fadas${cores.reset}`,
+    nome: `${cores.magenta}Rainha das Fadas${cores.reset}`,
     nivel: 2,
     xp: 20,
     dropMoeda: {
@@ -111,9 +111,9 @@ const rainhaFada: Monstro = {
     },
     hp: 250,
     hpMax: 250,
-    ataque: 10,
+    ataque: 35,
     efeito: efeitos[3],
-    defesa: 4,
+    defesa: 14,
     energia: 20,
     energiaMax: 20,
     habilidades: [
@@ -154,10 +154,10 @@ const goblin: Monstro = {
         min: 6,
         max: 14
     },
-    hp: 80,
-    hpMax: 80,
+    hp: 85,
+    hpMax: 85,
     ataque: 25,
-    defesa: 5,
+    defesa: 10,
     energia: 30,
     energiaMax: 30,
     habilidades: [
@@ -267,6 +267,7 @@ const dragao: Monstro = {
     hp: 1000,
     hpMax: 1000,
     ataque: 200,
+    efeito: efeitos[1],
     defesa: 50,
     energia: 100,
     energiaMax: 100,

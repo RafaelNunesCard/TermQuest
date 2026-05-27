@@ -9,7 +9,7 @@ function ehMonstro(atacante: Personagem | Monstro): atacante is Monstro {
 function escolherMonstro(dificuldade: number, monstros: any[]): Monstro | null {
     let monstrosDisponiveis = monstros.filter(m => m.nivel <= dificuldade);
 
-    let monstroEscolhido = monstrosDisponiveis[aleatorio(0, monstrosDisponiveis.length - 1)]
+    let monstroEscolhido = monstrosDisponiveis[aleatorio(0, monstrosDisponiveis.length - 1)];
     
     return { ...monstroEscolhido };
 }
