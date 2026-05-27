@@ -67,10 +67,10 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
                 console.log(`${personagem.nome} derrotou o ${monstroAlvo.nome}!`);
                 let ouroGanho = dropMoeda(dificuldade, monstroAlvo);
                 personagem.ouro += ouroGanho;
-                colorirTexto(cores.laranja, `${personagem.nome} ganhou ${ouroGanho} ouro!`);
+                colorirTexto(cores.laranja, `${personagem.nome} ganhou ${Math.floor(ouroGanho)} ouro!`);
                 let xpGanho = (calcularXP(monstroAlvo.xp, nivelDificuldade) - monstroAlvo.hp) / grupo.length; // Divide o XP ganho entre os membros do grupo
                 for (let p of grupo) {
-                    console.log(`${p.nome} ganhou ${xpGanho} de XP.`);
+                    console.log(`${p.nome} ganhou ${Math.floor(xpGanho)} de XP.`);
                     evoluirPersonagem(p, xpGanho); 
                     colorirTexto(cores.verde ,`${p.nome} barra de XP: ${barraProgresso(p.xp, p.xpNecessario, 10)}\n`);
                 }
@@ -154,12 +154,16 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
             let item = consumirItem(personagem)
             switch(item?.tipo){
                 case 'Poção':
-                    personagem.energia += item.valor;
+                    let pocaoEnergia = item.efeito.energia || 0;
+                    let pocaoHp = item.efeito.hp || 0;
+                    personagem.energia = Math.min(personagem.energia + pocaoEnergia,personagem.energiaMax);
+                    personagem.hp = Math.min(personagem.hp + pocaoHp, personagem.hpMax);
                     console.log(`${item.nome} foi usado`);
                     break;
 
                 case 'Equipamento':
-                    personagem.ataque += item.valor;
+                    personagem.ataque += item.efeito.ataque || 0;
+                    personagem.defesa += item.efeito.defesa || 0;
                     console.log(`${item.nome} foi usado`);
                     break;
 

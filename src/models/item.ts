@@ -3,7 +3,7 @@ interface Item {
     tipo: 'Poção' | 'Equipamento' | 'Chave'
     descricao: string
     valor: number // preço na loja
-    efeito?: {
+    efeito: {
         hp?: number
         energia?: number
         ataque?: number

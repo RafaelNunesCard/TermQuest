@@ -24,7 +24,7 @@ async function status(personagens: Personagem[], monstros: Monstro[]) {
         console.log(`${p.nome} - HP: ${Math.max(0,p.hp)}/${p.hpMax}, Energia: ${p.energia}/${p.energiaMax}`);
         ouroTotal += p.ouro;
     });
-    colorirTexto( cores.laranja, `Ouro total da equipe: ${ouroTotal}G`)
+    colorirTexto( cores.laranja, `Ouro total da equipe: ${Math.floor(ouroTotal)}G`)
     await esperar(1000);
     console.log("-----------------------------");
     
