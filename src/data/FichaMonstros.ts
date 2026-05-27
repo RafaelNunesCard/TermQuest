@@ -34,7 +34,7 @@ const slime: Monstro = {
 
 const reiSlime: Monstro = {
     ...monstroBase,
-    nome: `${cores.verdeLimao}Rei Slime${cores.reset}`,
+    nome: `${cores.verdeLimao}★ Rei Slime ★${cores.reset}`,
     nivel: 8,
     xp: 100,
     dropMoeda: {
@@ -102,12 +102,12 @@ const fada: Monstro = {
 
 const rainhaFada: Monstro = {
     ...monstroBase,
-    nome: `${cores.magenta}Rainha das Fadas${cores.reset}`,
+    nome: `${cores.magenta}★ Rainha das Fadas ★${cores.reset}`,
     nivel: 10,
     xp: 20,
     dropMoeda: {
-        min: 1,
-        max: 6
+        min: 12,
+        max: 22
     },
     hp: 250,
     hpMax: 250,
@@ -145,6 +145,29 @@ const esqueleto: Monstro = {
     chanceCritico: 20
 }
 
+const magoRuinas: Monstro = {
+    ...monstroBase,
+    nome: `${cores.azul}Mago das Ruinas${cores.reset}`,
+    nivel: 10,
+    xp: 85,
+    dropMoeda: {
+        min: 6,
+        max: 14
+    },
+    hp: 100,
+    hpMax: 100,
+    ataque: 45,
+    efeito: efeitos.fogo,
+    defesa: 10,
+    energia: 60,
+    energiaMax: 60,
+    habilidades: [
+        
+    ],
+    descricao: 'Um estudioso que mergulhou fundo nos segredos proibidos das ruínas antigas. O conhecimento o corrompeu, e agora ele defende os segredos que o destruíram.',
+    chanceCritico: 10
+}
+
 const goblin: Monstro = {
     ...monstroBase,
     nome: `${cores.verde}Goblin${cores.reset}`,
@@ -169,7 +192,7 @@ const goblin: Monstro = {
 
 const reiGoblin: Monstro = {
     ...monstroBase,
-    nome: `${cores.verde}Rei Goblin${cores.reset}`,
+    nome: `${cores.verde}★ Rei Goblin ★${cores.reset}`,
     nivel: 15,
     xp: 125,
     dropMoeda: {
@@ -189,10 +212,32 @@ const reiGoblin: Monstro = {
     chanceCritico: 25
 }
 
+const lich: Monstro = {
+    ...monstroBase,
+    nome: `${cores.cinza}★ Lich ★${cores.reset}`,
+    nivel: 20,
+    xp: 150,
+    dropMoeda: {
+        min: 16,
+        max: 33
+    },
+    hp: 200,
+    hpMax: 200,
+    ataque: 45,
+    defesa: 20,
+    energia: 35,
+    energiaMax: 35,
+    habilidades: [
+        
+    ],
+    descricao: 'Um poderoso feiticeiro que trocou sua alma pela imortalidade. Comanda exércitos de mortos-vivos e guarda segredos que a humanidade nunca deveria conhecer.',
+    chanceCritico: 30
+}
+
 const mimico: Monstro = {
     ...monstroBase,
     nome: `${cores.amarelo}Mimico${cores.reset}`,
-    nivel: 15,
+    nivel: 20,
     xp: 125,
     dropMoeda: {
         min: 15,
@@ -257,7 +302,7 @@ const troll: Monstro = {
 
 const dragao: Monstro = {
     ...monstroBase,
-    nome: `${cores.vermelho}Dragão${cores.reset}`,
+    nome: `${cores.vermelho}★ Dragão ★${cores.reset}`,
     nivel: 100,
     xp: 1250,
     dropMoeda: {
@@ -285,8 +330,10 @@ const monstros: Monstro[] = [
     fada,
     rainhaFada,
     esqueleto,
+    lich,
     goblin,
     reiGoblin,
+    magoRuinas,
     mimico,
     orc,
     troll,
