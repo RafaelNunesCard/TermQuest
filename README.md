@@ -12,11 +12,12 @@ TermQuest é um RPG onde você monta uma guilda de 3 heróis e enfrenta masmorra
 
 - **8 classes jogáveis** — Guerreiro, Mago, Arqueiro, Bardo, Curandeiro, Monge, Pirata e Paladino
 - **Sistema de batalha por turnos** — ataque, habilidades, defesa, itens e fuga
-- **Efeitos de status** — Veneno, Queimadura, Paralisia, Escudo e Cura
+- **Efeitos de status** — Veneno, Queimadura, Sangramento, Paralisia, Escudo e Cura
 - **Sistema de XP e evolução** — cada classe evolui com atributos únicos
 - **Masmorras progressivas** — dificuldade e monstros escalam por andar
+- **Salvar Progresso** — consegue salvar o progresso da sua Guilda
 - **Fogueira** — descanso, loja e treino entre batalhas
-- **12 monstros** — do Slime ao Dragão, cada um com comportamento próprio
+- **14 monstros** — do Slime ao Dragão, cada um com comportamento próprio
 
 ## 🗂️ Estrutura do Projeto
 
@@ -25,6 +26,7 @@ src/
   models/          ← interfaces e tipos (Personagem, Monstro, Habilidade...)
   data/            ← fichas prontas (personagens, monstros, habilidades, itens)
   functions/       ← lógica do jogo (batalha, cálculo, efeitos, loja...)
+  storage/         ← lógica do banco de dados (db, save)
   main.ts          ← entrada do jogo
 ```
 
@@ -34,8 +36,8 @@ src/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/RafaelNunesCard/TermQuest
-cd termquest
+git clone https://github.com/RafaelNunesCard/TermQuest.git
+cd TermQuest
 
 # Instale as dependências
 npm install
@@ -49,6 +51,7 @@ npx ts-node src/main.ts
 - **TypeScript** — tipagem estática, interfaces, union types, type guards e generics
 - **Node.js** — execução no terminal
 - **readline-sync** — input síncrono do jogador
+- **SQLite** — salvamento dos dados dos saves
 
 ## 📚 Aprendizados
 
@@ -65,5 +68,5 @@ Projeto desenvolvido para praticar TypeScript na prática, explorando:
 - [ ] Melhorar o sistema de Boss
 - [ ] Adicionar um Vampiro
 - [ ] Adicionar mais monstros
-- [ ] Adicionar opção de salvar (SQLite)
+- [X] Adicionar opção de salvar (SQLite)
 - [ ] Adicionar novos eventos 
