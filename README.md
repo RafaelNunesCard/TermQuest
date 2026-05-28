@@ -51,7 +51,7 @@ npx ts-node src/main.ts
 - **TypeScript** — tipagem estática, interfaces, union types, type guards e generics
 - **Node.js** — execução no terminal
 - **readline-sync** — input síncrono do jogador
-- **SQLite** — salvamento dos dados dos saves
+- **better-sqlite3** — salvamento de progresso com SQLite
 
 ## 📚 Aprendizados
 
