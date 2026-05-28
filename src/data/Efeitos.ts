@@ -35,7 +35,7 @@ const sangramento: efeito = {
 
 const encanto: efeito = {
     nome: "Encanto",
-    tipo: "Hipinose",
+    tipo: "Hipnose",
     valor: 1,
     chanceAplicar: 45,
     duracaoMax: 3,
@@ -57,7 +57,7 @@ const eletrificado: efeito = {
 // ===== Efeitos Passivos =====
 
 const bolha: efeito = {
-    nome: "Bolha Defenciva",
+    nome: "Bolha Defensiva",
     tipo: "Escudo",
     valor: 25,
     chanceAplicar: 100,

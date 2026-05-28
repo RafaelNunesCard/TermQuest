@@ -68,7 +68,13 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
                 let ouroGanho = dropMoeda(dificuldade, monstroAlvo);
                 personagem.ouro += ouroGanho;
                 colorirTexto(cores.laranja, `${personagem.nome} ganhou ${Math.floor(ouroGanho)} ouro!`);
+                if(Guilda.membros[0].passiva === '2gold') {
+                    personagem.ouro += Math.floor(ouroGanho * 0.5);
+                    colorirTexto(cores.laranja, `Passiva da guilda ativa! ${personagem.nome} ganhou mais ${Math.floor(ouroGanho * 0.5)} ouro!`);
+                }
+                
                 let xpGanho = (calcularXP(monstroAlvo.xp, nivelDificuldade) - monstroAlvo.hp) / grupo.length; // Divide o XP ganho entre os membros do grupo
+                if(Guilda.membros[0].passiva === '2xp') xpGanho *= 2;
                 for (let p of grupo) {
                     console.log(`${p.nome} ganhou ${Math.floor(xpGanho)} de XP.`);
                     evoluirPersonagem(p, xpGanho); 

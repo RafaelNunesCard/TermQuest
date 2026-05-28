@@ -4,6 +4,36 @@ import { Habilidade } from '../models/Habilidade';
 import { efeitos } from '../data/Efeitos';
 import { Monstro } from '../models/Monstros';
 import { ehMonstro } from './funMonstros';
+import { Guilda } from '../data/Ficha';
+
+function verificarPassiva(guilda: typeof Guilda) {
+    const passiva = guilda.membros[0].passiva
+    switch(passiva) {
+        case 'atk+': 
+            for(let membro of guilda.membros) {
+                membro.ataque += 5;
+            }
+            break;
+        case '%crit+':
+            for(let membro of guilda.membros) {
+                membro.chanceCritico += 10;
+            }
+            break;
+        case 'def+':
+            for(let membro of guilda.membros) {
+                membro.defesa += 5;
+            }
+            break;
+        case 'hp+':
+            for(let membro of guilda.membros) {
+                membro.hpMax += 20;
+                membro.hp = membro.hpMax;
+            }
+            break;
+        default: 
+            break;
+    }
+}
 
 function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro): number {
     if(atacante.perderTurno) {
@@ -25,6 +55,11 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
 }
 
 function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem | Monstro, habilidade: Habilidade): number {
+    if(atacante.perderTurno) {
+        console.log("Você não pode usar habilidades por conta de um efeito")
+        return 0;
+    }
+
     if (habilidade.custo > atacante.energia) {
         console.log(`${atacante.nome} não tem energia suficiente para usar ${habilidade.nome}.`);
         return 0;
@@ -43,14 +78,14 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
         atacante.energia -= habilidade.custo; 
     }
 
-    if(habilidade.Efeito && chance(habilidade.Efeito.chanceAplicar)){
-        alvo.efeitosAplicados.push({...habilidade.Efeito, duracaoAtual: habilidade.Efeito.duracaoMax});
-        console.log(`${alvo.nome} foi afetado por ${habilidade.Efeito.nome}!`);
-    }
-
     if (habilidade.dano < 0) {
         atacante.energia -= habilidade.custo;
         return habilidade.dano; // Cura
+    }
+
+    if(habilidade.Efeito && chance(habilidade.Efeito.chanceAplicar)){
+        alvo.efeitosAplicados.push({...habilidade.Efeito, duracaoAtual: habilidade.Efeito.duracaoMax});
+        console.log(`${alvo.nome} foi afetado por ${habilidade.Efeito.nome}!`);
     }
     
     atacante.energia -= habilidade.custo;
@@ -165,4 +200,4 @@ function evoluirPersonagem(personagem: Personagem, xpGanho: number,): void {
 }
 
 
-export { calcularDano, calcularDanoHabilidade, seDefender, maiorNivel, calcularXP, evoluirPersonagem };
+export { calcularDano, verificarPassiva, calcularDanoHabilidade, seDefender, maiorNivel, calcularXP, evoluirPersonagem };

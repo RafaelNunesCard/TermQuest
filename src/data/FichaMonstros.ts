@@ -44,7 +44,7 @@ const reiSlime: Monstro = {
     hp: 170,
     hpMax: 170,
     ataque: 30,
-    defesa: 8,
+    defesa: 18,
     energia: 30,
     energiaMax: 30,
     habilidades: [
@@ -113,7 +113,7 @@ const rainhaFada: Monstro = {
     hpMax: 250,
     ataque: 35,
     efeito: efeitos.eletrificado,
-    defesa: 14,
+    defesa: 24,
     energia: 20,
     energiaMax: 20,
     habilidades: [

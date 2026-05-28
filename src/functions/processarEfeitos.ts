@@ -51,8 +51,8 @@ async function processarEfeitos(alvo: Personagem | Monstro) {
                 alvo.hp += efeito.valor;
                 break;
             
-            case "Hipinose":
-                console.log('Adicionar uma função ao efeito de Hipinose!');
+            case "Hipnose":
+                console.log('Adicionar uma função ao efeito de Hipnose!');
                 break;
 
             default:

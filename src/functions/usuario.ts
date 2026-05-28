@@ -4,6 +4,7 @@ import { batalha } from './batalha';
 import { monstros } from '../data/FichaMonstros';
 import { fogueira } from './fogueira';
 import { Personagem } from '../models/Personagem';
+import { verificarPassiva } from './calculo';
 import { Guilda , opcoesPersonagem } from '../data/Ficha';
 import { salvar, carregar, listarSaves } from '../storage/save';
 import { colorirTexto, escreverDevagar, status, fichaPersonagem, fichaMonstros } from './interface';
@@ -22,6 +23,7 @@ async function hub() {
     switch(opcao) {
         case '1':   
             construirGuilda();
+            verificarPassiva(Guilda);
             await começar();
             return await hub();
 
@@ -106,7 +108,16 @@ function construirGuilda() {
                 
                 listarArray(disponiveis, (p, i) => `${i + 1}. ${p.classe}`);
                 
-                const escolha = parseInt(input(`Digite o ${i + 1}° herói: `)) - 1;
+                if(i === 0) {
+                    console.log('Dica: A passiva do primeiro personagem escolhido irá beneficiar toda a guilda!');
+                }
+
+                const escolha = parseInt(input(`Escolha o ${i + 1}º personagem: `)) - 1;
+                if (escolha < 0 || escolha >= disponiveis.length) {
+                    console.log('Escolha inválida, tente novamente.');
+                    i--;
+                    continue;
+                }
                 const indexOriginal = opcoesPersonagem.indexOf(disponiveis[escolha]);
                 
                 indicesEscolhidos.push(indexOriginal);

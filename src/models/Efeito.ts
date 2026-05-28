@@ -1,4 +1,4 @@
-type TiposDeEfeito = "Veneno" | "Paralisia" | "Queimadura" | "Escudo" | "Cura" | "Sangramento" | "Hipinose"
+type TiposDeEfeito = "Veneno" | "Paralisia" | "Queimadura" | "Escudo" | "Cura" | "Sangramento" | "Hipnose"
 
 interface efeito {
     nome: string
