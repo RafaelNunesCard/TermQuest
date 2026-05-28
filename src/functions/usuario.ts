@@ -5,6 +5,7 @@ import { monstros } from '../data/FichaMonstros';
 import { fogueira } from './fogueira';
 import { Personagem } from '../models/Personagem';
 import { Guilda , opcoesPersonagem } from '../data/Ficha';
+import { salvar, carregar, listarSaves } from '../storage/save';
 import { colorirTexto, escreverDevagar, status, fichaPersonagem, fichaMonstros } from './interface';
 
 async function hub() {
@@ -12,9 +13,10 @@ async function hub() {
 
     colorirTexto(cores.amarelo,'============ // ============');
     console.log('1. Começar Jogo!');
-    console.log('2. Ver Personagens');
-    console.log('3. Ver Monstros');
-    console.log('4. Sair');
+    console.log('2. Jogos salvos');
+    console.log('3. Ver Personagens');
+    console.log('4. Ver Monstros');
+    console.log('5. Encerrar seção');
     const opcao = input('Selecione uma opção: ');
 
     switch(opcao) {
@@ -24,14 +26,18 @@ async function hub() {
             return await hub();
 
         case '2':
-            listarPersonagens();
+            await savesList();
             return await hub();
 
         case '3':
-            listarMonstros();
+            listarPersonagens();
             return await hub();
 
         case '4':
+            listarMonstros();
+            return await hub();
+
+        case '5':
             console.log(`Obrigado por jogar!`);
             break;
 
@@ -41,38 +47,40 @@ async function hub() {
     }
 }
 
-async function começar(){
-    let dificuldade = escolherDificuldade();
+async function começar(difSalva?: number, andarSalvo?: number){
+    let dificuldade = difSalva || escolherDificuldade();
     let continuar = true;
-    let andar = 1;
+    let andar = andarSalvo || 1;
     let ganhou: boolean;
 
     while (continuar) {
-        if(andar === 1){
-            console.log("Começando nosso jogo!")
-        }
+        if(andar === 1) console.log("Começando nosso jogo!");
+
         colorirTexto(cores.vermelho,`---- Andar ${andar} ----\n`);
 
         ganhou = await batalha(Guilda.nome, Guilda.membros, monstros, dificuldade, andar);
         if(!ganhou) return await escreverDevagar(`A ${Guilda.nome} foi derrotada no andar ${andar}!`);
 
         let resposta = input('Deseja continuar na masmorra? (s/n): ');
-        if (resposta === 'n') {
+        if(resposta === 'n') {
             continuar = false;
             status(Guilda.membros, []);
             console.log(`Você derrotou muitos monstros nessa jornada`);
             break;
         }
+
         andar++;
         dificuldade += 5; // Aumenta a dificuldade a cada andar
+
+        resposta = input('Deseja salvar a sua aventura? (s/n): ')
+        if(resposta === 's') salvar(Guilda.nome, andar,dificuldade,Guilda.membros);
+
         console.log('\n-----------------------------------\n');
 
         console.log(`No meio da masmorra você encontra um lugar onde você pode descansar`)
         resposta = input("Deseja descansar? (s/n):")
 
-        if(resposta === 's'){
-            await fogueira(Guilda.membros);
-        }
+        if(resposta === 's') await fogueira(Guilda.membros);
     }
 }
 
@@ -107,8 +115,8 @@ function construirGuilda() {
             break;
 
         case '2':
-            console.log('Essa opção é um time recomendado pelo criador');
-            console.log('Boa sorte e bom jogo! ^-^');
+            console.log('Essa opção é um time recomendado pelo criador\n');
+            console.log('Boa sorte e bom jogo! (^-^)');
             break;
 
         case '3':
@@ -190,6 +198,29 @@ function listarMonstros() {
     }
 }
 
+async function savesList() {
+    const saves = listarSaves() as any[];
+    if (saves.length === 0) return colorirTexto(cores.vermelho,'Nenhum save encontrado.');
+    colorirTexto(cores.verdeLimao, 'Saves disponiveis :')
+
+    listarArray(saves, (s, i) => `${i + 1}. ${s.nome_guilda} - Andar ${s.andar}`);
+    const escolha = parseInt(input('Qual save deseja carregar? : ')) - 1;
+
+    if (escolha < 0 || escolha >= saves.length) {
+        console.log('Escolha inválida!');
+        return savesList();
+    }
+
+    const save = carregar(saves[escolha].nome_guilda);
+
+    Guilda.nome = save.nome_guilda;
+    Guilda.membros = JSON.parse(save.membros);
+    let dificuldade = save.dificuldade;
+    let andar = save.andar;
+    console.log(`Save da ${Guilda.nome} carregado!`);
+    return await começar( dificuldade, andar );
+}
+
 function escolherDificuldade(): number {
     colorirTexto(cores.amarelo,'Escolha a dificuldade da batalha:');
     console.log('1. Fácil');
@@ -202,11 +233,11 @@ function escolherDificuldade(): number {
         case '1':
             return 1;
         case '2':
-            return 10;
+            return 5;
         case '3':
-            return 40;
+            return 10;
         case '4':
-            return 100;
+            return 20;
         default:
             console.log('Escolha inválida, tente novamente.');
             return escolherDificuldade();
