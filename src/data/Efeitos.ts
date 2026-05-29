@@ -53,6 +53,16 @@ const eletrificado: efeito = {
     descricao: "Perde 2 turnos"
 }
 
+const atordoado: efeito = {
+    nome: "Atordoado",
+    tipo: "Paralisia",
+    valor: 1,
+    chanceAplicar: 40,
+    duracaoMax: 2,
+    duracaoAtual: 0,
+    descricao: "Perde 2 turnos"
+}
+
 
 // ===== Efeitos Passivos =====
 
@@ -91,6 +101,7 @@ const cura: efeito = {
 let efeitos = {
     fogo,
     veneno,
+    atordoado,
     eletrificado,
     sangramento,
     encanto,

@@ -291,6 +291,39 @@ const bençãoDivina: Habilidade = {
     chanceCritico: 0
 }
 
+// ===== Cangaceiro =====
+const facao: Habilidade = {
+    nome: 'Facão',
+    dano: 35,
+    tipo: 'Físico',
+    custo: 20,
+    descricao: 'Ataca o inimigo com um facão causando 35 de dano físico e sangramento.',
+    Efeito: efeitos.sangramento,
+    chanceAcerto: 85,
+    chanceCritico: 15
+}
+
+const escopeta: Habilidade = {
+    nome: 'Escopeta',
+    dano: 50,
+    tipo: 'Físico',
+    custo: 30,
+    descricao: 'Dispara uma escopeta que causa 50 de dano físico ao inimigo e tem chance de atordoar.',
+    Efeito: efeitos.atordoado,
+    chanceAcerto: 80,
+    chanceCritico: 20
+}
+
+const dinamite: Habilidade = {
+    nome: 'Dinamite',
+    dano: 60,
+    tipo: 'Físico',
+    custo: 50,
+    descricao: 'Lança uma dinamite que causa 60 de dano físico em área.',
+    chanceAcerto: 80,
+    chanceCritico: 25
+}
+
 const habilidades = {
     rage,
     avante,
@@ -322,7 +355,11 @@ const habilidades = {
 
     escudoSagrado,
     investidaMilagrosa,
-    bençãoDivina
+    bençãoDivina,
+
+    facao,
+    escopeta,
+    dinamite
 }
     
 // --------- Habilidades Monstros ------------

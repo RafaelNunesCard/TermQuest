@@ -2,8 +2,8 @@ import { Habilidade } from "./Habilidade";
 import { efeito } from "./Efeito"
 import { Item } from "./item";
 
-type Classe = 'Guerreiro' | 'Mago' | 'Arqueiro' | 'Bardo' | 'Curandeiro' | 'Monge' | 'Pirata' | 'Paladino'
-type Passiva = '2xp' | 'def+' | 'atk+' | 'hp+' | '2gold' | '%crit+'
+type Classe = 'Guerreiro' | 'Mago' | 'Arqueiro' | 'Bardo' | 'Curandeiro' | 'Monge' | 'Pirata' | 'Paladino' | 'Cangaceiro'
+type Passiva = '2xp' | 'def+' | 'atk+' | 'hp+' | '2gold' | '%crit+' | 'steal'
 
 interface Personagem {
     nome: string

@@ -3,7 +3,7 @@ import { aleatorio, chance } from './chances';
 import { Habilidade } from '../models/Habilidade';
 import { efeitos } from '../data/Efeitos';
 import { Monstro } from '../models/Monstros';
-import { ehMonstro } from './funMonstros';
+import { dropMoeda, ehMonstro } from './funMonstros';
 import { Guilda } from '../data/Ficha';
 import { habilidadesEspeciais } from './habilidadesEspeciais';
 
@@ -12,7 +12,7 @@ function verificarPassiva(guilda: typeof Guilda) {
     switch(passiva) {
         case 'atk+': 
             for(let membro of guilda.membros) {
-                membro.ataque += 5;
+                membro.ataque += 8;
             }
             break;
         case '%crit+':
@@ -22,12 +22,12 @@ function verificarPassiva(guilda: typeof Guilda) {
             break;
         case 'def+':
             for(let membro of guilda.membros) {
-                membro.defesa += 5;
+                membro.defesa += 8;
             }
             break;
         case 'hp+':
             for(let membro of guilda.membros) {
-                membro.hpMax += 20;
+                membro.hpMax += 10;
                 membro.hp = membro.hpMax;
             }
             break;
@@ -40,6 +40,12 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
     if(atacante.perderTurno) {
         console.log("Você não pode atacar por conta de um efeito")
         return 0;
+    }
+    
+    if(!ehMonstro(atacante) && ehMonstro(alvo) && atacante.classe === 'Cangaceiro') {
+        const roubo = Math.floor(dropMoeda(1, alvo) * 0.1);
+        atacante.ouro += roubo;
+        console.log(`${atacante.nome} roubou ${roubo} de ${alvo.nome}!`);
     }
 
     if(ehMonstro(atacante) && atacante.efeito && chance(atacante.efeito.chanceAplicar)){

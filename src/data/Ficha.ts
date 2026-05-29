@@ -184,9 +184,31 @@ const paladino: Personagem = {
     chanceAcerto: 90,
 }
 
+const cangaceiro: Personagem = {
+    ...personagemBase,
+    nome: 'Pedro',
+    classe: 'Cangaceiro',
+    passiva: 'steal',
+    explicarPassiva: 'Rouba 10% do ouro do inimigo a cada ataque',
+    hp: 110,
+    hpMax: 110,
+    ataque: 30,
+    defesa: 10,
+    energia: 50,
+    energiaMax: 50,
+    habilidades: [
+        habilidades.facao,
+        habilidades.escopeta,
+        habilidades.dinamite
+    ],
+    chanceAcerto: 85,
+    chanceEsquiva: 5,
+    chanceCritico: 15
+}
+
 
 const personagensPrimairos: [Personagem, Personagem, Personagem] = [heroi, mago, arqueiro]
-const opcoesPersonagem: Personagem[] = [heroi, mago, arqueiro, bardo, curandeiro, monge, pirata, paladino]
+const opcoesPersonagem: Personagem[] = [heroi, mago, arqueiro, bardo, curandeiro, monge, pirata, paladino, cangaceiro]
 
 const Guilda = {
     nome: 'Guilda dos Heróis',
