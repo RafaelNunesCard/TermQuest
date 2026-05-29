@@ -145,10 +145,11 @@ const pirata: Personagem = {
     classe: 'Pirata',
     passiva: '2gold',
     explicarPassiva: 'Duplica o dinheiro ganho pelo time, mas não tem energia usa dinheiro para habilidades',
+    ouro: 20,
     hp: 100,
     hpMax: 100,
     ataque: 35,
-    defesa: 5,
+    defesa: 7,
     energia: 0,
     energiaMax: 0,
     habilidades: [

@@ -10,6 +10,7 @@ interface Habilidade {
         ataque?: number
         defesa?: number
         velocidade?: number
+        taxaCritica?: number
     }
     Efeito?: efeito
     descricao: string

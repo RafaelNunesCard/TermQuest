@@ -48,7 +48,7 @@ async function processarEfeitos(alvo: Personagem | Monstro) {
 
             case "Cura":
                 await escreverDevagar(`${alvo.nome} a cura do ${efeito.nome} recuperou ${efeito.valor}`, 50);
-                alvo.hp += efeito.valor;
+                alvo.hp += Math.min(alvo.hpMax, alvo.hp + efeito.valor);
                 break;
             
             case "Hipnose":

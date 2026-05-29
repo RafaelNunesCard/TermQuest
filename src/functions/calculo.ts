@@ -5,6 +5,7 @@ import { efeitos } from '../data/Efeitos';
 import { Monstro } from '../models/Monstros';
 import { ehMonstro } from './funMonstros';
 import { Guilda } from '../data/Ficha';
+import { habilidadesEspeciais } from './habilidadesEspeciais';
 
 function verificarPassiva(guilda: typeof Guilda) {
     const passiva = guilda.membros[0].passiva
@@ -56,8 +57,33 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
 
 function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem | Monstro, habilidade: Habilidade): number {
     if(atacante.perderTurno) {
-        console.log("Você não pode usar habilidades por conta de um efeito")
+        console.log(`Você não pode usar habilidades por conta da paralisia ou outro efeito!`);
         return 0;
+    }
+
+    if(!ehMonstro(atacante) && atacante.classe === 'Pirata') {
+        if(atacante.ouro < habilidade.custo) {
+            console.log(`${atacante.nome} não tem ouro suficiente para usar ${habilidade.nome}.`);
+            return 0;
+        }
+
+        if(aleatorio(1, 100) >= habilidade.chanceAcerto) {
+            console.log(`${atacante.nome} errou o ataque com ${habilidade.nome}!`);
+            return 0; // Ataque erra
+        }
+
+        atacante.ouro -= habilidade.custo;const especial = habilidadesEspeciais[habilidade.nome];
+        if(especial) return especial(atacante, alvo, habilidade) || 0;
+        let danoBase = Math.max(1, habilidade.dano - alvo.defesa);
+        danoBase *= chance(habilidade.chanceCritico) ? 2 : 1;
+
+        return danoBase; // Dano fixo para habilidades de pirata
+    }
+
+    const especial = habilidadesEspeciais[habilidade.nome];
+    if(especial && !ehMonstro(atacante)) {
+        const resultado = especial(atacante, alvo, habilidade);
+        if(resultado !== null) return resultado;
     }
 
     if (habilidade.custo > atacante.energia) {
@@ -89,7 +115,7 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
     }
     
     atacante.energia -= habilidade.custo;
-    let danoBase = habilidade.dano + Math.max(1, atacante.ataque - alvo.defesa );
+    let danoBase = Math.max(1, habilidade.dano - alvo.defesa);
     danoBase *= chance(habilidade.chanceCritico) ? 1.5 : 1; // Dano crítico
 
     return danoBase;

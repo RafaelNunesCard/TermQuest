@@ -1,5 +1,5 @@
 import { cores } from "../models/cores";
-import { colorirTexto, escreverDevagar } from "./interface";
+import { colorirTexto, escreverDevagar, esperar } from "./interface";
 import { Itens } from "../data/Itens";
 import { Item } from "../models/item";
 import { aleatorio } from "./chances";
@@ -22,7 +22,7 @@ async function loja(membros: any[]) {
         item4,
         item5
     ]
-
+    await esperar(1000);
     await escreverDevagar("Você viu uma pequena loja de um Rato!\n", 100);
     while(continuarCompra) {
         ouroTotal = 0;

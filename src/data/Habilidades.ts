@@ -131,7 +131,7 @@ const musica: Habilidade = {
         ataque: 10,
         defesa: 8
     },
-    descricao: 'A melodia é tão bela que insentiva o guerreiro afetado a lutar mais.',
+    descricao: 'A melodia é tão bela que insentiva o guerreiro afetado a lutar mais (10 atk, 8 def).',
     chanceAcerto: 100,
     chanceCritico: 0
 }
@@ -144,9 +144,10 @@ const cypher: Habilidade = {
     duracao: 5,
     buff: {
         ataque: 20,
-        defesa: 15
+        defesa: 15,
+        taxaCritica: 20
     },
-    descricao: 'Faz todos do time entrar no mesmo ritmo aumentando (20 atk, 15 def).',
+    descricao: 'Faz todos do time entrar no mesmo ritmo aumentando (20 atk, 15 def, taxa de crítico).',
     chanceAcerto: 100,
     chanceCritico: 0
 }
@@ -241,7 +242,7 @@ const canhao: Habilidade = {
 
 const cassino: Habilidade = {
     nome: 'Cassino',
-    dano: 0,
+    dano: 55,
     tipo: 'Físico',
     custo: 60,
     descricao: 'Joga um dado de 6 lados, se sair 1 ou 2 causa dano ao inimigo, se sair 3 ou 4 diminuir dano do inimigo, se sair 5 ou 6 causa dano em área.',

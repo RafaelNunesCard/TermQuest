@@ -74,15 +74,16 @@ async function começar(difSalva?: number, andarSalvo?: number){
         andar++;
         dificuldade += 5; // Aumenta a dificuldade a cada andar
 
-        resposta = input('Deseja salvar a sua aventura? (s/n): ')
-        if(resposta === 's') salvar(Guilda.nome, andar,dificuldade,Guilda.membros);
-
         console.log('\n-----------------------------------\n');
 
         console.log(`No meio da masmorra você encontra um lugar onde você pode descansar`)
         resposta = input("Deseja descansar? (s/n):")
-
         if(resposta === 's') await fogueira(Guilda.membros);
+
+        console.log('\n-----------------------------------\n');
+
+        resposta = input('Deseja salvar a sua aventura? (s/n): ')
+        if(resposta === 's') salvar(Guilda.nome, andar,dificuldade,Guilda.membros);
     }
 }
 
@@ -109,7 +110,7 @@ function construirGuilda() {
                 listarArray(disponiveis, (p, i) => `${i + 1}. ${p.classe}`);
                 
                 if(i === 0) {
-                    console.log('Dica: A passiva do primeiro personagem escolhido irá beneficiar toda a guilda!');
+                    colorirTexto(cores.amarelo, 'Dica: A passiva do primeiro personagem escolhido irá beneficiar toda a guilda!');
                 }
 
                 const escolha = parseInt(input(`Escolha o ${i + 1}º personagem: `)) - 1;
@@ -164,7 +165,7 @@ function listarPersonagens() {
                 break;
 
             case '2':
-                if(index === 0)return console.log('Você já está na primeira pagina página');
+                if(index === 0)return console.log('Você já está na primeira página');
                 index--;
                 break;
 

@@ -148,6 +148,7 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
             if(dano < 0) {
                 console.log(`${personagem.nome} escolheu curar`);
                 let aliado = Guilda.membros[escolhaPersonagem(Guilda.membros, 'Escolha um personagem para curar')]; 
+                
                 aliado.hp = Math.min(aliado.hpMax, aliado.hp - dano); // Dano negativo cura
                 colorirTexto(cores.verdeLimao, `${aliado.nome} foi curado! (HP - ${aliado.hp}/${aliado.hpMax})`)
                 return;
