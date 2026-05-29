@@ -52,9 +52,10 @@ async function descansar(guilda: Personagem[]) {
 function treinar(guilda: Personagem[]) {
     for(let personagem of guilda) {
         let experienciaGanha = (personagem.xpNecessario / 4); // Valor fixo de experiência ganha
+        if(guilda[0].passiva === '2xp') experienciaGanha *= 2;
         evoluirPersonagem(personagem, experienciaGanha);
         console.log(`${personagem.nome} ganhou ${experienciaGanha} de xp`)
-        console.log(`${personagem.nome} barra XP: ${barraProgresso(personagem.xp, personagem.xpNecessario)}\n`)
+        colorirTexto(cores.verde, `${personagem.nome} barra XP: ${barraProgresso(personagem.xp, personagem.xpNecessario)}\n`)
     }
 }
 

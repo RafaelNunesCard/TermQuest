@@ -4,8 +4,7 @@ const db = new Database('saves.db');
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS save (
-        id INTEGER PRIMARY KEY,
-        nome_guilda TEXT,
+        nome_guilda TEXT PRIMARY KEY,
         andar INTEGER,
         dificuldade INTEGER,
         membros TEXT

@@ -83,6 +83,7 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
     const especial = habilidadesEspeciais[habilidade.nome];
     if(especial && !ehMonstro(atacante)) {
         const resultado = especial(atacante, alvo, habilidade);
+        atacante.energia -= habilidade.custo; // Gasta energia mesmo que a habilidade seja especial
         if(resultado !== null) return resultado;
     }
 
