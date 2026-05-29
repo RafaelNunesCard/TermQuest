@@ -1,18 +1,20 @@
 import { Personagem } from '../models/Personagem';
 import { habilidades } from './Habilidades';
 
-const personagemBase = {
-    nivel: 1,
-    ouro: 0,
-    xp: 0,
-    xpNecessario: 50,
-    inventario: [],
-    efeitosAplicados: [],
-    perderTurno: false
+function criarPersonagemBase() {
+    return {
+        nivel: 1,
+        ouro: 0,
+        xp: 0,
+        xpNecessario: 50,
+        inventario: [],
+        efeitosAplicados: [],
+        perderTurno: false
+    }
 }
 
 const heroi: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Cauã',
     classe: 'Guerreiro',
     hp: 150,
@@ -32,7 +34,7 @@ const heroi: Personagem = {
 }
 
 const mago: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Derek',
     classe: 'Mago',
     hp: 100,
@@ -52,7 +54,7 @@ const mago: Personagem = {
 }
 
 const arqueiro: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Isaac',
     classe: 'Arqueiro',
     passiva: '%crit+',
@@ -74,7 +76,7 @@ const arqueiro: Personagem = {
 }
 
 const bardo: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Marcos',
     classe: 'Bardo',
     passiva: '2xp',
@@ -96,7 +98,7 @@ const bardo: Personagem = {
 }
 
 const curandeiro: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Rafael',
     classe: 'Curandeiro',
     passiva: 'hp+',
@@ -118,7 +120,7 @@ const curandeiro: Personagem = {
 }
 
 const monge: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Carlos',
     classe: 'Monge',
     passiva: 'atk+',
@@ -140,7 +142,7 @@ const monge: Personagem = {
 }
 
 const pirata: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Izidio',
     classe: 'Pirata',
     passiva: '2gold',
@@ -163,7 +165,7 @@ const pirata: Personagem = {
 }
 
 const paladino: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Caio',
     classe: 'Paladino',
     passiva: 'def+',
@@ -185,7 +187,7 @@ const paladino: Personagem = {
 }
 
 const cangaceiro: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Pedro',
     classe: 'Cangaceiro',
     passiva: 'steal',
@@ -207,7 +209,7 @@ const cangaceiro: Personagem = {
 }
 
 const vampiro: Personagem = {
-    ...personagemBase,
+    ...criarPersonagemBase(),
     nome: 'Gilmar',
     classe: 'Vampiro',
     passiva: 'lifeSteal',
