@@ -82,6 +82,14 @@ const habilidadesEspeciais: Record<string, Acao> = {
         aliado.chanceCritico += habilidade.buff?.taxaCritica || 0;
         console.log(`${atacante.nome} usou Benção Divina e aumentou o ataque, defesa e chance de crítico do ${aliado.nome}!`);
         return habilidade.dano;
+    },
+
+    'sugarSangue': (atacante, alvo, habilidade) => {
+        let vidaRoubada = Math.min(20, alvo.hp);
+        alvo.hp -= vidaRoubada;
+        atacante.hp = Math.min(atacante.hp + vidaRoubada, atacante.hpMax);
+        console.log(`${atacante.nome} usou Sugar Sangue e roubou ${vidaRoubada} de vida do ${alvo.nome}!`);
+        return habilidade.dano;
     }
 }
 

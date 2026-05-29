@@ -41,11 +41,19 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
         console.log("Você não pode atacar por conta de um efeito")
         return 0;
     }
-    
-    if(!ehMonstro(atacante) && ehMonstro(alvo) && atacante.classe === 'Cangaceiro') {
+
+    if(aleatorio(1, 100) >= atacante.chanceAcerto) return 0; // Ataque erra
+
+    if(!ehMonstro(atacante) && ehMonstro(alvo) && atacante.passiva === 'steal') {
         const roubo = Math.floor(dropMoeda(1, alvo) * 0.1);
         atacante.ouro += roubo;
         console.log(`${atacante.nome} roubou ${roubo} de ${alvo.nome}!`);
+    }
+
+    if(!ehMonstro(atacante) && atacante.passiva === 'lifeSteal') {
+        const rouboVida = Math.floor(atacante.ataque * 0.3);
+        atacante.hp = Math.min(atacante.hp + rouboVida, atacante.hpMax);
+        console.log(`${atacante.nome} roubou ${rouboVida} de vida com a passiva!`);
     }
 
     if(ehMonstro(atacante) && atacante.efeito && chance(atacante.efeito.chanceAplicar)){
@@ -55,9 +63,7 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
 
     let danoBase = Math.max(1, atacante.ataque - alvo.defesa);
     danoBase *= chance(atacante.chanceCritico) ? 2 : 1; // Dano crítico
-
-    if(aleatorio(1, 100) >= atacante.chanceAcerto) return 0; // Ataque erra
-
+    
     return danoBase;
 }
 
@@ -78,12 +84,13 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
             return 0; // Ataque erra
         }
 
-        atacante.ouro -= habilidade.custo;const especial = habilidadesEspeciais[habilidade.nome];
+        atacante.ouro -= habilidade.custo;
+        const especial = habilidadesEspeciais[habilidade.nome];
         if(especial) return especial(atacante, alvo, habilidade) || 0;
         let danoBase = Math.max(1, habilidade.dano - alvo.defesa);
         danoBase *= chance(habilidade.chanceCritico) ? 2 : 1;
 
-        return danoBase; // Dano fixo para habilidades de pirata
+        return danoBase + (atacante.ataque * 0.5); // Dano fixo para habilidades de pirata
     }
 
     const especial = habilidadesEspeciais[habilidade.nome];
@@ -125,7 +132,7 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
     let danoBase = Math.max(1, habilidade.dano - alvo.defesa);
     danoBase *= chance(habilidade.chanceCritico) ? 1.5 : 1; // Dano crítico
 
-    return danoBase;
+    return danoBase + (atacante.ataque * 0.5);
 }
 
 function seDefender(personagem: Personagem): void {

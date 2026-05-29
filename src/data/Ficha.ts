@@ -206,9 +206,43 @@ const cangaceiro: Personagem = {
     chanceCritico: 15
 }
 
+const vampiro: Personagem = {
+    ...personagemBase,
+    nome: 'Gilmar',
+    classe: 'Vampiro',
+    passiva: 'lifeSteal',
+    explicarPassiva: 'Rouba vida do inimigo a cada ataque',
+    hp: 120,
+    hpMax: 120,
+    ataque: 25,
+    defesa: 10,
+    energia: 50,
+    energiaMax: 50,
+    habilidades: [
+        habilidades.sugarSangue,
+        habilidades.necromancia,
+        habilidades.banhoSangue
+    ],
+    chanceAcerto: 85,
+    chanceEsquiva: 5,
+    chanceCritico: 15
+}
+
 
 const personagensPrimairos: [Personagem, Personagem, Personagem] = [heroi, mago, arqueiro]
-const opcoesPersonagem: Personagem[] = [heroi, mago, arqueiro, bardo, curandeiro, monge, pirata, paladino, cangaceiro]
+
+const opcoesPersonagem: Personagem[] = [
+    heroi, 
+    mago, 
+    arqueiro, 
+    bardo, 
+    curandeiro, 
+    monge, 
+    pirata, 
+    paladino, 
+    cangaceiro, 
+    vampiro
+]
 
 const Guilda = {
     nome: 'Guilda dos Heróis',

@@ -324,6 +324,39 @@ const dinamite: Habilidade = {
     chanceCritico: 25
 }
 
+// ===== Vampiro =====
+const sugarSangue: Habilidade = {
+    nome: 'Sugar de Sangue',
+    dano: 20,
+    tipo: 'Físico',
+    custo: 10,
+    descricao: 'Rouba 20 de vida do inimigo no ataque.',
+    Efeito: efeitos.sangramento,
+    chanceAcerto: 85,
+    chanceCritico: 15
+}
+
+const necromancia: Habilidade = {
+    nome: 'Necromancia',
+    dano: 30,
+    tipo: 'Mágico',
+    custo: 20,
+    descricao: 'Invoca espiritos que atacam o inimigo causando dano mágico.',
+    chanceAcerto: 80,
+    chanceCritico: 20
+}
+
+const banhoSangue: Habilidade = {
+    nome: 'Banho de Sangue',
+    dano: 60,
+    tipo: 'Físico',
+    custo: 30,
+    descricao: 'Causa dano físico ao inimigo e rouba 60 de vida do mesmo.',
+    Efeito: efeitos.sangramento,
+    chanceAcerto: 75,
+    chanceCritico: 25
+}
+
 const habilidades = {
     rage,
     avante,
@@ -359,7 +392,11 @@ const habilidades = {
 
     facao,
     escopeta,
-    dinamite
+    dinamite,
+
+    sugarSangue,
+    necromancia,
+    banhoSangue
 }
     
 // --------- Habilidades Monstros ------------
