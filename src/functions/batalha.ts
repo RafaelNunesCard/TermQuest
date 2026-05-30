@@ -58,9 +58,11 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         // Grupo ataca o monstro
         for (let personagem of grupo) {
             if(grupoMonstros.length === 0) break;
+            let resposta = 'atacar';
+            if(personagem.perderTurno) console.log(`${personagem.nome} perdeu o turno por causa da paralisia!`);
 
             let monstroAlvo = escolherAlvo(personagem, grupoMonstros);
-            let resposta = escolherAcao(personagem);
+            if(personagem.classe !== 'Sumon') resposta = escolherAcao(personagem);
             await fazerAcao(resposta, personagem, monstroAlvo);
 
             if (monstroAlvo.hp <= 0) {
@@ -122,6 +124,7 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         console.log(`A guilda ${guilda} foi derrotada...`)
         return false;
     }
+    grupo = grupo.filter(p => p.classe !== 'Sumon'); // Se sobrou algum sumon, tira ele do grupo para não aparecer na próxima batalha
     console.log(`A ${guilda} venceu a batalha!`);
     return true;
 }
@@ -152,7 +155,7 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
                 return;
             }
 
-            if(personagem.ouro < habilidade.custo) {
+            if(personagem.ouro < habilidade.custo && personagem.classe === 'Pirata') { // Falta de ouro para pirata
                 console.log(`${personagem.nome} não tem ouro suficiente para usar ${habilidade.nome}.`);
                 const novaAcao = escolherAcao(personagem);
                 await fazerAcao(novaAcao, personagem, monstro);
@@ -160,6 +163,7 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
             }
 
             dano = calcularDanoHabilidade(personagem, monstro, habilidade);
+            if(dano === 0) break; // Habilidades que não dão dano, como buffs ou cura, não mostram a mensagem de erro ou de acerto
             if(dano < 0) {
                 console.log(`${personagem.nome} escolheu curar`);
                 let aliado = Guilda.membros[escolhaPersonagem(Guilda.membros, 'Escolha um personagem para curar')]; 

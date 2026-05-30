@@ -104,7 +104,7 @@ function construirGuilda() {
             
             const indicesEscolhidos: number[] = [];
 
-            for(let i = 0; i < Guilda.membros.length; i++) {
+            for(let i = 0; i < 3; i++) {
                 const disponiveis = opcoesPersonagem.filter((_, index) => !indicesEscolhidos.includes(index));
                 
                 listarArray(disponiveis, (p, i) => `${i + 1}. ${p.classe}`);
@@ -134,7 +134,7 @@ function construirGuilda() {
 
         case '3':
             const embaralhado = [...opcoesPersonagem].sort(() => Math.random() - 0.5);
-            for(let i = 0; i < Guilda.membros.length; i++) {
+            for(let i = 0; i < 3; i++) {
                 Guilda.membros[i] = embaralhado[i];
                 console.log(`${i + 1}. ${Guilda.membros[i].classe}`);
             }

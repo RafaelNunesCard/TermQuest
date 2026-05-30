@@ -2,7 +2,7 @@ import { Habilidade } from "./Habilidade";
 import { efeito } from "./Efeito"
 import { Item } from "./item";
 
-type Classe = 'Guerreiro' | 'Mago' | 'Arqueiro' | 'Bardo' | 'Curandeiro' | 'Monge' | 'Pirata' | 'Paladino' | 'Cangaceiro' | 'Vampiro'
+type Classe = 'Guerreiro' | 'Mago' | 'Arqueiro' | 'Bardo' | 'Curandeiro' | 'Monge' | 'Pirata' | 'Paladino' | 'Cangaceiro' | 'Vampiro' | 'Sumon'
 type Passiva = '2xp' | 'def+' | 'atk+' | 'hp+' | '2gold' | '%crit+' | 'steal' | 'lifeSteal'
 
 interface Personagem {

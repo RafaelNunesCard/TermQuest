@@ -231,7 +231,7 @@ const vampiro: Personagem = {
 }
 
 
-const personagensPrimairos: [Personagem, Personagem, Personagem] = [heroi, mago, arqueiro]
+const personagensPrimairos: Personagem[] = [heroi, mago, arqueiro]
 
 const opcoesPersonagem: Personagem[] = [
     heroi, 

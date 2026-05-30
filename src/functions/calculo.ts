@@ -7,6 +7,8 @@ import { dropMoeda, ehMonstro } from './funMonstros';
 import { Guilda } from '../data/Ficha';
 import { habilidadesEspeciais } from './habilidadesEspeciais';
 import { escolherAcao } from './usuario';
+import { colorirTexto } from './interface';
+import { cores } from '../models/cores';
 
 function verificarPassiva(guilda: typeof Guilda) {
     const passiva = guilda.membros[0].passiva
@@ -38,23 +40,18 @@ function verificarPassiva(guilda: typeof Guilda) {
 }
 
 function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro): number {
-    if(atacante.perderTurno) {
-        console.log("Você não pode atacar por conta de um efeito")
-        return 0;
-    }
-
     if(aleatorio(1, 100) >= atacante.chanceAcerto) return 0; // Ataque erra
 
     if(!ehMonstro(atacante) && ehMonstro(alvo) && atacante.passiva === 'steal') {
         const roubo = Math.floor(dropMoeda(1, alvo) * 0.1);
         atacante.ouro += roubo;
-        console.log(`${atacante.nome} roubou ${roubo} de ${alvo.nome}!`);
+        colorirTexto(cores.amarelo, `${atacante.nome} roubou ${roubo} de ${alvo.nome}!`);
     }
 
     if(!ehMonstro(atacante) && atacante.passiva === 'lifeSteal') {
         const rouboVida = Math.floor(atacante.ataque * 0.3);
         atacante.hp = Math.min(atacante.hp + rouboVida, atacante.hpMax);
-        console.log(`${atacante.nome} roubou ${rouboVida} de vida com a passiva!`);
+        colorirTexto(cores.vermelho, `${atacante.nome} roubou ${rouboVida} de vida com a passiva!`);
     }
 
     if(ehMonstro(atacante) && atacante.efeito && chance(atacante.efeito.chanceAplicar)){
@@ -63,29 +60,24 @@ function calcularDano(atacante: Personagem | Monstro, alvo: Personagem | Monstro
     }
 
     let danoBase = Math.max(1, atacante.ataque - alvo.defesa);
-    danoBase *= chance(atacante.chanceCritico) ? 2 : 1; // Dano crítico
+    danoBase *= chance(atacante.chanceCritico) ? 1.5 : 1; // Dano crítico
     
     return danoBase;
 }
 
 function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem | Monstro, habilidade: Habilidade): number {
-    if(atacante.perderTurno) {
-        console.log(`Você não pode usar habilidades por conta da paralisia ou outro efeito!`);
-        return 0;
+    if(aleatorio(1, 100) >= habilidade.chanceAcerto) {
+        colorirTexto(cores.vermelho, `${atacante.nome} errou o ataque com ${habilidade.nome}!`);
+        return 0; // Ataque erra
     }
-
+    
     if(!ehMonstro(atacante) && atacante.classe === 'Pirata') { 
         // Pirata usa ouro ao invés de energia para suas habilidades
-        if(aleatorio(1, 100) >= habilidade.chanceAcerto) {
-            console.log(`${atacante.nome} errou o ataque com ${habilidade.nome}!`);
-            return 0; // Ataque erra
-        }
-
         atacante.ouro -= habilidade.custo;
         const especial = habilidadesEspeciais[habilidade.nome];
         if(especial) return especial(atacante, alvo, habilidade) || 0;
         let danoBase = Math.max(1, habilidade.dano - alvo.defesa);
-        danoBase *= chance(habilidade.chanceCritico) ? 2 : 1;
+        danoBase *= chance(habilidade.chanceCritico) ? 1.5 : 1;
 
         return Math.floor(danoBase + (atacante.ataque * 0.25)); // Dano fixo para habilidades de pirata
     }
@@ -95,11 +87,6 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
         const resultado = especial(atacante, alvo, habilidade);
         atacante.energia -= habilidade.custo; // Gasta energia mesmo que a habilidade seja especial
         if(resultado !== null) return resultado;
-    }
-
-    if(aleatorio(1, 100) >= habilidade.chanceAcerto) {
-        console.log(`${atacante.nome} errou o ataque com ${habilidade.nome}!`);
-        return 0; // Ataque erra
     }
 
     if (habilidade.buff) {
@@ -215,6 +202,22 @@ function evoluirPersonagem(personagem: Personagem, xpGanho: number,): void {
                 personagem.hp = personagem.hpMax;
                 personagem.ataque += 8;
                 personagem.defesa += 7;
+                personagem.energiaMax += 10;
+                personagem.energia = personagem.energiaMax;
+                break;
+            case 'Cangaceiro':
+                personagem.hpMax += 12;
+                personagem.hp = personagem.hpMax;
+                personagem.ataque += 7;
+                personagem.defesa += 4;
+                personagem.energiaMax += 15;
+                personagem.energia = personagem.energiaMax;
+                break;
+            case 'Vampiro':
+                personagem.hpMax += 15;
+                personagem.hp = personagem.hpMax;
+                personagem.ataque += 8;
+                personagem.defesa += 5;
                 personagem.energiaMax += 10;
                 personagem.energia = personagem.energiaMax;
                 break;
