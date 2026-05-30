@@ -213,7 +213,7 @@ const vampiro: Personagem = {
     nome: 'Gilmar',
     classe: 'Vampiro',
     passiva: 'lifeSteal',
-    explicarPassiva: 'Rouba vida do inimigo a cada ataque',
+    explicarPassiva: 'Rouba vida do inimigo a cada ataque. A ordem de escolha não afeta a passiva.',
     hp: 120,
     hpMax: 120,
     ataque: 25,

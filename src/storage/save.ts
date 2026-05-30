@@ -10,8 +10,8 @@ function salvar(nomeGuilda: string, andar: number, dificuldade: number, membros:
     }
     
     const stmt = db.prepare(`
-        INSERT OR REPLACE INTO save (id, nome_guilda, andar, dificuldade, membros)
-        VALUES ( ?, ?, ?, ?)
+        INSERT OR REPLACE INTO save ( nome_guilda, andar, dificuldade, membros)
+        VALUES (?, ?, ?, ?)
     `);
     stmt.run(nomeGuilda, andar, dificuldade, JSON.stringify(membros));
     console.log('Jogo salvo com sucesso! (^-^)');

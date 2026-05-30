@@ -90,6 +90,40 @@ const habilidadesEspeciais: Record<string, Acao> = {
         atacante.hp = Math.min(atacante.hp + vidaRoubada, atacante.hpMax);
         console.log(`${atacante.nome} usou Sugar Sangue e roubou ${vidaRoubada} de vida do ${alvo.nome}!`);
         return habilidade.dano;
+    },
+
+    'necromancia': (atacante, alvo, habilidade) => {
+        console.log(`${atacante.nome} usou Necromancia e invocou um esqueleto para lutar ao seu lado!`);
+        let esqueleto: Personagem = {
+            nome: 'Esqueleto Invocado',
+            classe: 'Guerreiro',
+            nivel: atacante.nivel,
+            xp: 0,
+            xpNecessario: 100,
+            hp: 80,
+            hpMax: 80,
+            ataque: 15,
+            defesa: 5,
+            energia: 0,
+            energiaMax: 0,
+            inventario: [],
+            ouro: 0,
+            habilidades: [],
+            efeitosAplicados: [],
+            chanceAcerto: 80,
+            chanceEsquiva: 10,
+            chanceCritico: 5
+        };
+        Guilda.membros.push(esqueleto);
+        return habilidade.dano;
+    },
+
+    'banhoSangue': (atacante, alvo, habilidade) => {
+        let vidaRoubada = Math.min(60, alvo.hp);
+        alvo.hp -= vidaRoubada;
+        atacante.hp = Math.min(atacante.hp + vidaRoubada, atacante.hpMax);
+        console.log(`${atacante.nome} usou Banho de Sangue e roubou ${vidaRoubada} de vida do ${alvo.nome}!`);
+        return habilidade.dano;
     }
 }
 
