@@ -7,6 +7,7 @@ import { consumirItem, escolhaPersonagem, escolherAcao, escolherAlvo, escolherHa
 import { status, colorirTexto, barraProgresso, esperar } from './interface';
 import { limparEfeitos, processarEfeitos } from './processarEfeitos';
 import { cores } from '../models/cores';
+import { chance } from './chances';
 
 async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[], nivelDificuldade: number, andar: number) {
     let nivelBase = maiorNivel(grupo).nivel;
@@ -53,6 +54,7 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         await esperar(1000);
         colorirTexto(cores.laranja ,`\n---- Turno ${turno} ----\n`);
         grupoMonstros = grupoMonstros.filter(m => m.hp > 0); // Remove os monstros derrotados
+        grupo = grupo.filter(p => p.hp > 0); // Remove personagens derrotados
         await status(grupo, grupoMonstros);
         
         // Grupo ataca o monstro
@@ -124,23 +126,24 @@ async function batalha(guilda: string, grupo: Personagem[], monstros: Monstro[],
         console.log(`A guilda ${guilda} foi derrotada...`)
         return false;
     }
-    grupo = grupo.filter(p => p.classe !== 'Sumon'); // Se sobrou algum sumon, tira ele do grupo para não aparecer na próxima batalha
+    Guilda.membros = Guilda.membros.filter(p => p.classe !== 'Sumon'); // Se sobrou algum sumon, tira ele do grupo para não aparecer na próxima batalha
     console.log(`A ${guilda} venceu a batalha!`);
     return true;
 }
 
 async function fazerAcao(resposta: string, personagem: Personagem, monstro: Monstro): Promise<void> {
     let dano;
+    let critico;
     switch (resposta) {
         case 'atacar':
             console.log('Você escolheu atacar!\n');
             dano = calcularDano(personagem, monstro);
             if (dano === 0) {
                 console.log(`${personagem.nome} errou o ataque!`);
-            } else {
-                monstro.hp -= dano;
-                console.log(`${personagem.nome} causou ${dano} de dano no ${monstro.nome}.`);
             }
+            critico = chance(personagem.chanceCritico) ? 1.5 : 1;
+            monstro.hp -= dano * critico;
+            console.log(`${personagem.nome} causou ${dano} ${critico === 1.5 ? '☆crítico' : ''} de dano no ${monstro.nome}.`);
             console.log("");
             await esperar(1000);
             break;
@@ -172,8 +175,9 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
                 colorirTexto(cores.verdeLimao, `${aliado.nome} foi curado! (HP - ${aliado.hp}/${aliado.hpMax})`)
                 return;
             }
-            monstro.hp -= dano;
-            console.log(`${personagem.nome} causou ${dano} de dano no ${monstro.nome}.`);
+            critico = chance(habilidade.chanceCritico) ? 1.5 : 1;
+            monstro.hp -= dano * critico;
+            console.log(`${personagem.nome} causou ${dano} ${critico === 1.5 ? '☆crítico' : ''} de dano no ${monstro.nome}.`);
             console.log("");
             await esperar(500);
             break;
