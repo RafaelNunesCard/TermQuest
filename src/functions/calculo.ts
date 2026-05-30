@@ -6,6 +6,7 @@ import { Monstro } from '../models/Monstros';
 import { dropMoeda, ehMonstro } from './funMonstros';
 import { Guilda } from '../data/Ficha';
 import { habilidadesEspeciais } from './habilidadesEspeciais';
+import { escolherAcao } from './usuario';
 
 function verificarPassiva(guilda: typeof Guilda) {
     const passiva = guilda.membros[0].passiva
@@ -73,12 +74,8 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
         return 0;
     }
 
-    if(!ehMonstro(atacante) && atacante.classe === 'Pirata') {
-        if(atacante.ouro < habilidade.custo) {
-            console.log(`${atacante.nome} não tem ouro suficiente para usar ${habilidade.nome}.`);
-            return 0;
-        }
-
+    if(!ehMonstro(atacante) && atacante.classe === 'Pirata') { 
+        // Pirata usa ouro ao invés de energia para suas habilidades
         if(aleatorio(1, 100) >= habilidade.chanceAcerto) {
             console.log(`${atacante.nome} errou o ataque com ${habilidade.nome}!`);
             return 0; // Ataque erra
@@ -98,11 +95,6 @@ function calcularDanoHabilidade(atacante: Personagem | Monstro, alvo: Personagem
         const resultado = especial(atacante, alvo, habilidade);
         atacante.energia -= habilidade.custo; // Gasta energia mesmo que a habilidade seja especial
         if(resultado !== null) return resultado;
-    }
-
-    if (habilidade.custo > atacante.energia) {
-        console.log(`${atacante.nome} não tem energia suficiente para usar ${habilidade.nome}.`);
-        return 0;
     }
 
     if(aleatorio(1, 100) >= habilidade.chanceAcerto) {

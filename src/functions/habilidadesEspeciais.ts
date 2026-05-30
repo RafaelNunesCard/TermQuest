@@ -4,6 +4,8 @@ import { Habilidade } from '../models/Habilidade';
 import { aleatorio } from './chances';
 import { Guilda } from '../data/Ficha';
 import { escolhaPersonagem } from './usuario';
+import { colorirTexto } from './interface';
+import { cores } from '../models/cores';
 
 type Acao = (atacante: Personagem, alvo: Personagem | Monstro, habilidade: Habilidade) => number | null;
 
@@ -37,7 +39,7 @@ const habilidadesEspeciais: Record<string, Acao> = {
 
     'Benção Pura': (atacante, alvo, habilidade) => {
         let aliado = Guilda.membros[escolhaPersonagem(Guilda.membros, 'Escolha um personagem para limpar os status negativos')]; 
-        aliado.efeitosAplicados = aliado.efeitosAplicados.filter(e => e.tipo !== 'Veneno' && e.tipo !== 'Paralisia' && e.tipo !== 'Queimadura');
+        aliado.efeitosAplicados = aliado.efeitosAplicados.filter(e => e.tipo !== 'Veneno' && e.tipo !== 'Paralisia' && e.tipo !== 'Queimadura' && e.tipo !== 'Sangramento');
         console.log(`${atacante.nome} usou Benção Pura e limpou os status negativos do ${aliado.nome}!`);
         return habilidade.dano;
     },
@@ -54,7 +56,7 @@ const habilidadesEspeciais: Record<string, Acao> = {
 
     'Meditar': (atacante, alvo, habilidade) => {
         atacante.efeitosAplicados = atacante.efeitosAplicados
-            .filter(e => e.tipo !== 'Veneno' && e.tipo !== 'Paralisia' && e.tipo !== 'Queimadura');
+            .filter(e => e.tipo !== 'Veneno' && e.tipo !== 'Paralisia' && e.tipo !== 'Queimadura' && e.tipo !== 'Sangramento');
         console.log(`${atacante.nome} meditou e limpou os efeitos negativos!`);
         return habilidade.dano;
     },
@@ -122,7 +124,7 @@ const habilidadesEspeciais: Record<string, Acao> = {
         let vidaRoubada = Math.min(60, alvo.hp);
         alvo.hp -= vidaRoubada;
         atacante.hp = Math.min(atacante.hp + vidaRoubada, atacante.hpMax);
-        console.log(`${atacante.nome} usou Banho de Sangue e roubou ${vidaRoubada} de vida do ${alvo.nome}!`);
+        colorirTexto(cores.vermelho, `${atacante.nome} usou Banho de Sangue e roubou ${vidaRoubada} de vida do ${alvo.nome}!`);
         return habilidade.dano;
     }
 }

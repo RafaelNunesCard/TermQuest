@@ -326,7 +326,7 @@ const dinamite: Habilidade = {
 
 // ===== Vampiro =====
 const sugarSangue: Habilidade = {
-    nome: 'Sugar de Sangue',
+    nome: 'Sugar sangue',
     dano: 20,
     tipo: 'Físico',
     custo: 10,

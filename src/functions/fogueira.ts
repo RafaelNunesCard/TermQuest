@@ -36,6 +36,7 @@ async function fogueira( guilda: any[] ) {
 
         default:
             console.log("Ação inválida. Você apenas ficou sentado ao redor da fogueira.");
+            fogueira(guilda);
     }
 }
 

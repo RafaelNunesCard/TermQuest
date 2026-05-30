@@ -1,10 +1,10 @@
 import { efeito } from '../models/Efeito'
-
+import { cores } from '../models/cores'
 
 // ===== Efeitos Agressivos =====
 
 const fogo: efeito = {
-    nome: "Fogo",
+    nome: `${cores.laranja}Fogo${cores.reset}`,
     tipo: "Queimadura",
     valor: 24,
     chanceAplicar: 60,
@@ -14,7 +14,7 @@ const fogo: efeito = {
 }
 
 const veneno: efeito = {
-    nome: "Veneno",
+    nome: `${cores.verde}Veneno${cores.reset}`,
     tipo: "Veneno",
     valor: 15,
     chanceAplicar: 60,
@@ -24,7 +24,7 @@ const veneno: efeito = {
 }
 
 const sangramento: efeito = {
-    nome: "Sangramento",
+    nome: `${cores.vermelho}Sangramento${cores.reset}`,
     tipo: "Sangramento",
     valor: 15,
     chanceAplicar: 60,
@@ -34,7 +34,7 @@ const sangramento: efeito = {
 }
 
 const encanto: efeito = {
-    nome: "Encanto",
+    nome: `${cores.magenta}Encanto${cores.reset}`,
     tipo: "Hipnose",
     valor: 1,
     chanceAplicar: 45,
@@ -44,7 +44,7 @@ const encanto: efeito = {
 }
 
 const eletrificado: efeito = {
-    nome: "Eletrificado",
+    nome: `${cores.azul}Eletrificado${cores.reset}`,
     tipo: "Paralisia",
     valor: 1,
     chanceAplicar: 35,
@@ -54,7 +54,7 @@ const eletrificado: efeito = {
 }
 
 const atordoado: efeito = {
-    nome: "Atordoado",
+    nome: `${cores.cinza}Atordoado${cores.reset}`,
     tipo: "Paralisia",
     valor: 1,
     chanceAplicar: 40,
@@ -67,7 +67,7 @@ const atordoado: efeito = {
 // ===== Efeitos Passivos =====
 
 const bolha: efeito = {
-    nome: "Bolha Defensiva",
+    nome: `${cores.azul}Bolha Defensiva${cores.reset}`,
     tipo: "Escudo",
     valor: 25,
     chanceAplicar: 100,
@@ -78,7 +78,7 @@ const bolha: efeito = {
 
 
 const defendendo: efeito = {
-    nome: "Defendendo",
+    nome: `${cores.cinza}Defendendo${cores.reset}`,
     tipo: "Escudo",
     valor: 25,
     chanceAplicar: 100,
@@ -88,7 +88,7 @@ const defendendo: efeito = {
 }
 
 const cura: efeito = {
-    nome: "Cura",
+    nome: `${cores.verdeLimao}Cura${cores.reset}`,
     tipo: "Cura",
     valor: 15,
     chanceAplicar: 60,

@@ -144,7 +144,22 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
 
         case 'habilidade':
             console.log('Você escolheu usar uma habilidade!\n');
-            dano = calcularDanoHabilidade(personagem, monstro, escolherHabilidade(personagem));
+            let habilidade = escolherHabilidade(personagem);
+            if(habilidade.custo > personagem.energia && personagem.classe !== 'Pirata') { // Falta de energia
+                console.log(`${personagem.nome} não tem energia suficiente para usar ${habilidade.nome}.`);
+                const novaAcao = escolherAcao(personagem);
+                await fazerAcao(novaAcao, personagem, monstro);
+                return;
+            }
+
+            if(personagem.ouro < habilidade.custo) {
+                console.log(`${personagem.nome} não tem ouro suficiente para usar ${habilidade.nome}.`);
+                const novaAcao = escolherAcao(personagem);
+                await fazerAcao(novaAcao, personagem, monstro);
+                return;
+            }
+
+            dano = calcularDanoHabilidade(personagem, monstro, habilidade);
             if(dano < 0) {
                 console.log(`${personagem.nome} escolheu curar`);
                 let aliado = Guilda.membros[escolhaPersonagem(Guilda.membros, 'Escolha um personagem para curar')]; 
@@ -165,6 +180,7 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
             console.log("");
             break;
         case 'item':
+            let novaAcao: string;
             let item = consumirItem(personagem)
             switch(item?.tipo){
                 case 'Poção':
@@ -173,20 +189,30 @@ async function fazerAcao(resposta: string, personagem: Personagem, monstro: Mons
                     personagem.energia = Math.min(personagem.energia + pocaoEnergia,personagem.energiaMax);
                     personagem.hp = Math.min(personagem.hp + pocaoHp, personagem.hpMax);
                     console.log(`${item.nome} foi usado`);
+                    novaAcao = escolherAcao(personagem);
+                    await fazerAcao(novaAcao, personagem, monstro);
                     break;
 
                 case 'Equipamento':
                     personagem.ataque += item.efeito.ataque || 0;
                     personagem.defesa += item.efeito.defesa || 0;
                     console.log(`${item.nome} foi usado`);
+                    novaAcao = escolherAcao(personagem);
+                    await fazerAcao(novaAcao, personagem, monstro);
+
                     break;
 
                 case 'Chave':
                     console.log("Não pode ser usada em batalha");
+                    novaAcao = escolherAcao(personagem);
+                    await fazerAcao(novaAcao, personagem, monstro);
+
                     break;
 
                 default:
                     console.log("Você não adicionou o tipo no case 'item'");
+                    novaAcao = escolherAcao(personagem);
+                    await fazerAcao(novaAcao, personagem, monstro);
             }
 
             break;

@@ -128,6 +128,7 @@ function construirGuilda() {
 
         case '2':
             console.log('Essa opção é um time recomendado pelo criador\n');
+            listarArray(Guilda.membros, (p, i) => `${i + 1}. ${p.classe}`);
             console.log('Boa sorte e bom jogo! (^-^)');
             break;
 
